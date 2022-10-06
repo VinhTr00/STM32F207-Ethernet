@@ -6,5 +6,4 @@
 
 void tcp_echo_init(void);
 
-
 #endif /* _TCP_ECHO_H_ */

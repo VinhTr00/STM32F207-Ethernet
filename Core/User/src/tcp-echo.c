@@ -4,7 +4,7 @@
 #include "string.h"
 #include "cmsis_os.h"
 #include "tcp-echo.h"
-
+#include "queue.h"
 #include <stdio.h>
 
 /* Private typedef -----------------------------------------------------------*/
@@ -14,6 +14,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+extern QueueHandle_t xQueue1;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 static void tcp_echo_thread(void *arg){
@@ -26,6 +27,7 @@ static void tcp_echo_thread(void *arg){
 	unsigned short port;
 	char msg[100];
 	char smsg[200];
+	static uint8_t queueSend = 1;
 
 	conn = netconn_new(NETCONN_TCP);
 	if (conn != NULL){
@@ -43,6 +45,8 @@ static void tcp_echo_thread(void *arg){
 						/* Extract the address and port in case they are required */
 						addr = netbuf_fromaddr(buf);
 						port = netbuf_fromaddr(buf);
+						memset(smsg, '\0', 200);
+						xQueueSendToBack(xQueue1, &queueSend, 0);
 
 						/* If there is some data remaining to be sent, the following process will continue */
 						do {

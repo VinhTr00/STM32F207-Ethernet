@@ -22,6 +22,7 @@
 #include "string.h"
 #include "httpserver-netconn.h"
 #include "cmsis_os.h"
+#include "queue.h"
 
 #include <stdio.h>
 
@@ -32,6 +33,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+extern QueueHandle_t xQueue2;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -42,14 +44,16 @@ static void http_server_serve(struct netconn *conn)
 	char* buf;
 	u16_t buflen;
 	struct fs_file file;
+	static uint8_t queueSend = 1;
 
 	/* Read the data from the port, blocking if nothing yet there. */
 	recv_err = netconn_recv(conn, &inbuf);
-
+	
 	if (recv_err == ERR_OK)
 	{
 		if (netconn_err(conn) == ERR_OK)
 		{
+			xQueueSendToBack(xQueue2, &queueSend, 0);
 			netbuf_data(inbuf, (void**)&buf, &buflen);
 			/* Is this an HTTP GET command? (only check the first 5 chars, since
 			  there are other formats for GET, and we're keeping it very simple )*/

@@ -31,6 +31,7 @@
 /* USER CODE BEGIN 0 */
 #include "httpserver-netconn.h"
 #include "tcp-echo.h"
+#include "led-toggle.h"
 /* USER CODE END 0 */
 /* Private function prototypes -----------------------------------------------*/
 /* ETH Variables initialization ----------------------------------------------*/
@@ -128,6 +129,7 @@ void MX_LWIP_Init(void)
 /* USER CODE BEGIN 3 */
   http_server_netconn_init();
   tcp_echo_init();
+  led_toggle_init();
 /* USER CODE END 3 */
 }
 

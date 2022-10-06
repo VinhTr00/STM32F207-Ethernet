@@ -2,3 +2,5 @@
 Debug/
 stm32f207-ethernet Debug.launch
 .mxproject
+.vscode
+
