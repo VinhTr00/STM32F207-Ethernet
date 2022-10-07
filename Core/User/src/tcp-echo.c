@@ -9,12 +9,13 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define TCPECHO_THREAD_PRIO    (osPriority_t) osPriorityHigh
+#define TCPECHO_THREAD_PRIO    (osPriority_t) osPriorityNormal
 #define TCPECHO_PORT 7
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 extern QueueHandle_t xQueue1;
+osSemaphoreId xSemaphoreTCP = NULL;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 static void tcp_echo_thread(void *arg){
@@ -74,4 +75,5 @@ static void tcp_echo_thread(void *arg){
 void tcp_echo_init(void)
 {
 	sys_thread_new("TCPECHO", tcp_echo_thread, NULL, DEFAULT_THREAD_STACKSIZE, TCPECHO_THREAD_PRIO);
+	xSemaphoreTCP = osSemaphoreNew(1, 1, NULL);
 }

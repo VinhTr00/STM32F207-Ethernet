@@ -28,7 +28,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define WEBSERVER_THREAD_PRIO    (osPriority_t) osPriorityHigh
+#define WEBSERVER_THREAD_PRIO    (osPriority_t) osPriorityNormal
 #define WEBSERVER_PORT 80
 
 /* Private macro -------------------------------------------------------------*/
@@ -118,7 +118,7 @@ static void http_server_netconn_thread(void *arg)
   if (conn!= NULL)
   {
 	  /* Bind to port 80 (HTTP) with default IP address */
-	  err = netconn_bind(conn, NULL, WEBSERVER_PORT);
+	err = netconn_bind(conn, NULL, WEBSERVER_PORT);
     if (err == ERR_OK)
     {
       /* Put the connection into LISTEN state */

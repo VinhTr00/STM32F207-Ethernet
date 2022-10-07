@@ -11,7 +11,7 @@ TimerHandle_t STM_LED1_Timer, STM_LED2_Timer;
 osThreadId_t ledtogglehandle;
 extern QueueHandle_t xQueue1, xQueue2;
 
-void StartLedToggle(void * argument);
+static void StartLedToggle(void * argument);
 static void Led1TimerCallback(TimerHandle_t xTimer);
 static void Led2TimerCallback(TimerHandle_t xTimer);
 
@@ -22,11 +22,12 @@ void led_toggle_init(void){
         .priority = TCPECHO_THREAD_PRIO,
     };
     ledtogglehandle = osThreadNew(StartLedToggle, NULL, &ledTask);
+    (void)ledtogglehandle;
     STM_LED1_Timer = xTimerCreate("Led1Timer", ONE_SHOT_TIMER, pdFALSE, 0, Led1TimerCallback);
     STM_LED2_Timer = xTimerCreate("Led2Timer", ONE_SHOT_TIMER, pdFALSE, 0, Led2TimerCallback);
 }
 
-void StartLedToggle(void * argument){
+static void StartLedToggle(void * argument){
     const TickType_t shortdelay = pdMS_TO_TICKS(10);
     int32_t queueReceived;
     QueueSetMemberHandle_t xHandle;
